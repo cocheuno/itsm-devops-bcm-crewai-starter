@@ -4,9 +4,18 @@ from src.agents import create_agents
 agents = create_agents()
 
 task1 = Task(
-    description="Detect the event, classify severity (minor/major/catastrophic), and create the initial incident record. Event: {event_description}",
+    description=(
+        "The following event has been reported: {event_description}\n\n"
+        "Complete these 3 steps in order using ONLY your provided tools:\n"
+        "Step 1: Call the analyze_security_event tool with the event description above.\n"
+        "Step 2: Call the get_service_catalog tool to list critical services.\n"
+        "Step 3: Call the create_incident_record tool with the severity, event type, and affected services from Steps 1-2.\n\n"
+        "After completing all 3 steps, write your Final Answer summarizing the incident.\n"
+        "IMPORTANT: You have ONLY 3 tools: analyze_security_event, get_service_catalog, create_incident_record. "
+        "Do NOT call any other tool."
+    ),
     agent=agents[0],
-    expected_output="Clear severity classification + incident ID + immediate invocation of BCM plan"
+    expected_output="Incident ID, severity classification, affected services, and BCM plan activation status"
 )
 
 task2 = Task(
