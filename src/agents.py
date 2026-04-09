@@ -1,10 +1,9 @@
-import os
 from crewai import Agent, LLM
 from src.tools import analyze_security_event, create_incident_record, get_service_catalog, calculate_impact, failover_service, send_notification, log_lesson
 
-gemini_llm = LLM(
-    model="gemini/gemini-2.5-flash",
-    api_key=os.environ.get("GEMINI_API_KEY")
+ollama_llm = LLM(
+    model="ollama/qwen3:8b-q4_K_M",
+    base_url="http://localhost:11434"
 )
 
 
@@ -23,7 +22,7 @@ def create_agents():
         ),
         tools=[analyze_security_event, get_service_catalog, create_incident_record],
         verbose=True,
-        llm=gemini_llm,
+        llm=ollama_llm,
         allow_delegation=False
     )
 
@@ -32,7 +31,7 @@ def create_agents():
         goal="Calculate exact RTO/RPO impact, prioritize services, and align to business value (ITIL Guiding Principle: Focus on Value)",
         backstory="You translate outages into regulatory, customer, and financial risk using the full Service Value System.",
         tools=[calculate_impact],
-        llm=gemini_llm,
+        llm=ollama_llm,
         verbose=True
     )
 
@@ -41,7 +40,7 @@ def create_agents():
         goal="Orchestrate automated recovery using DevOps Three Ways (Flow, Feedback, Continual Learning) and CALMS automation",
         backstory="You live by the Three Ways. You optimize flow with automation, close feedback loops instantly, and capture lessons for improvement.",
         tools=[failover_service, log_lesson],
-        llm=gemini_llm,
+        llm=ollama_llm,
         verbose=True
     )
 
@@ -50,7 +49,7 @@ def create_agents():
         goal="Deliver calm, clear, timely updates to all stakeholders per ITIL 'Collaborate and Promote Visibility'",
         backstory="You ensure every message builds trust and meets regulatory requirements.",
         tools=[send_notification],
-        llm=gemini_llm,
+        llm=ollama_llm,
         verbose=True
     )
 
