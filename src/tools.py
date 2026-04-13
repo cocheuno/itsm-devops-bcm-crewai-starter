@@ -1,6 +1,6 @@
 from crewai.tools import BaseTool
 from pydantic import BaseModel, Field
-from typing import Optional, Dict, List
+from typing import Any, Optional, Dict, List
 from datetime import datetime, timedelta
 import hashlib
 import json
@@ -42,7 +42,7 @@ class FailoverResult(BaseModel):
     """Detailed failover execution results"""
     service_name: str
     status: str  # "success", "partial", "failed", "data_loss"
-    pre_failover_health: Dict[str, any]
+    pre_failover_health: Dict[str, Any]
     replication_lag_seconds: int
     failover_duration_seconds: int
     execution_steps: List[Dict[str, str]]
